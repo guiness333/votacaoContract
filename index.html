@@ -19,6 +19,7 @@
         <label for="digito" class="col-lg-2 control-label">Digito</label>
         <input id="digito" type="text">
         <button id="button" onclick="addCandidatoJS()">Adicionar</button>
+        <button id="button" onclick="getCandidatos()">Get</button>
     </div>
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
     <script>
@@ -134,7 +135,11 @@
             console.log(nome,partido,digito);
             contract.methods.addCandidato(nome, partido, parseInt(digito)).send({gas:2000000}).then(a=>console.log(a));
         }
-
+        function getCandidatos(){
+            let digito = document.getElementById("digito").value;
+            contract.methods.get(parseInt(digito)).call().then(a=>document.getElementById("votacao").innerHTML = a);
+            
+        }
     
 
     </script>
