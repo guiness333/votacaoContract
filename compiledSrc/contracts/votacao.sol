@@ -16,6 +16,8 @@ contract votacao {
         owner = msg.sender;
     }
     
+    event eAddCandidato(string nome, uint16 digito);
+
     function addCandidato(string memory nome, string memory partido, uint16 digito) public {
         require(owner == msg.sender, "somente o dono do contrato pode adicionar candidatos!");
         candidato memory c;
@@ -23,6 +25,7 @@ contract votacao {
         c.partido = partido;
         c.digito = digito;
         candidatos.push(c);
+        emit eAddCandidato(c.nome, c.digito);
     }
     function get(uint16 digito) public view returns (candidato memory){
         for(uint i=0;i<candidatos.length; i++){

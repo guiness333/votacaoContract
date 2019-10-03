@@ -14,32 +14,128 @@
         <h2 id="votacao"></h2>
         <label for="name" class="col-lg-2 control-label">Nome</label>
         <input id="name" type="text">
-        <label for="name" class="col-lg-2 control-label">Partido</label>
-        <input id="age" type="text">
-        <label for="name" class="col-lg-2 control-label">Digito</label>
-        <input id="age" type="text">
-        <button id="button">Adicionar</button>
+        <label for="partido" class="col-lg-2 control-label">Partido</label>
+        <input id="partido" type="text">
+        <label for="digito" class="col-lg-2 control-label">Digito</label>
+        <input id="digito" type="text">
+        <button id="button" onclick="addCandidatoJS()">Adicionar</button>
     </div>
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
     <script>
-        if (typeof web3 !== 'undefined') {
-            web3 = new Web3(web3.currentProvider);
-        } else {
-            // set the provider you want from Web3.providers
-            web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:7545"));
-            web3.eth.getAccounts().then(function(result){
-                web3.eth.defaultAccount = result[0];
-            });            
-            var contract_abi = [{"constant":!1,"inputs":[{"internalType":"string","name":"nome","type":"string"},{"internalType":"string","name":"partido","type":"string"},{"internalType":"uint16","name":"digito","type":"uint16"}],"name":"addCandidato","outputs":[],"payable":!1,"stateMutability":"nonpayable","type":"function"},{"constant":!0,"inputs":[{"internalType":"uint16","name":"digito","type":"uint16"}],"name":"get","outputs":[{"components":[{"internalType":"string","name":"nome","type":"string"},{"internalType":"string","name":"partido","type":"string"},{"internalType":"uint16","name":"digito","type":"uint16"}],"internalType":"struct votacao.candidato","name":"","type":"tuple"}],"payable":!1,"stateMutability":"view","type":"function"},{"inputs":[],"payable":!1,"stateMutability":"nonpayable","type":"constructor"}];
-            var votacao = new web3.eth.Contract(contract_abi, '0xE78450Ba2399402287450f1C387Ade71F9cB8a9E', {
-                from: '0xE78450Ba2399402287450f1C387Ade71F9cB8a9E',
-                gasPrice: '20000000000'
-                });
-            console.log(votacao);
+        web3 = new Web3("http://localhost:7545");
+        web3.eth.getAccounts().then(function(result){
+        web3.eth.defaultAccount = result[0];
+        });
+
+
+        var contract = new web3.eth.Contract([
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "nome",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "partido",
+				"type": "string"
+			},
+			{
+				"internalType": "uint16",
+				"name": "digito",
+				"type": "uint16"
+			}
+		],
+		"name": "addCandidato",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "constructor"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": false,
+				"internalType": "string",
+				"name": "nome",
+				"type": "string"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint16",
+				"name": "digito",
+				"type": "uint16"
+			}
+		],
+		"name": "eAddCandidato",
+		"type": "event"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"internalType": "uint16",
+				"name": "digito",
+				"type": "uint16"
+			}
+		],
+		"name": "get",
+		"outputs": [
+			{
+				"components": [
+					{
+						"internalType": "string",
+						"name": "nome",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "partido",
+						"type": "string"
+					},
+					{
+						"internalType": "uint16",
+						"name": "digito",
+						"type": "uint16"
+					}
+				],
+				"internalType": "struct votacao.candidato",
+				"name": "",
+				"type": "tuple"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	}
+],'0xC007947d21D968B036c1f4b7666bAeE018051246',{
+    
+        from: '0xE78450Ba2399402287450f1C387Ade71F9cB8a9E',
+        gasPrice: '20000000000'
+        });
+        
+        
+
+        console.log(contract.methods);
+        function addCandidatoJS(){
+            let nome = document.getElementById("name").value;
+            let partido = document.getElementById("partido").value;
+            let digito = document.getElementById("digito").value; 
+
+            console.log(nome,partido,digito);
+            contract.methods.addCandidato(nome, partido, parseInt(digito)).send({gas:2000000}).then(a=>console.log(a));
         }
-        function addCandidatoJS(nome, partido, digito){
-            votacao.addCandidato(nome, partido, digito);
-        }
+
+    
 
     </script>
 </body>
