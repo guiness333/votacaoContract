@@ -1,0 +1,51 @@
+<!doctype html>
+<html>
+    <head>
+	<title>BC Solution Project</title>
+		<body>
+        
+        <meta charset="utf-8">        
+        <link href="bootstrap\css\bootstrap-grid.css" rel="stylesheet">
+		<script src="Jquery\jquery.min.js"></script>		
+		
+        <div class="container">
+		<div class="col">
+		<div class="col-md-4 offset-md-4">
+		<div class="col align-self-center">
+		<div id="painelAlternado">
+			
+			<input type=image src="Imagens\ButtonFPLogin3.png" onclick="TrocarPag()" width=100%/12>			
+			<img src="Imagens\ButtonFPLoginTxt1.png" width=100%/12>
+			<img src="Imagens\btAjuda2.png" width=100%/12 style="margin-top:35px;">
+			
+		</div>
+		</div>
+		</div>		
+		</div>
+		</div>
+				   
+		<script>
+		function TrocarPag(){
+			alert("executando função troca de painel");			
+			
+			$.ajax({	
+				src: 'pagina 2.html',
+				type: 'GET',
+				
+				sucess: function(html){
+			
+					var $dv = $(html).find('#pnAlter');
+					$('#painelAlternado').html($dv);
+				
+				}
+			});
+			
+			
+		}
+		</script>
+
+		<div class="rodape" align="center">
+		@BC Solutions, Copyright 2019 Todos os direitos reservados						
+		</div>        
+    </body>
+</html>

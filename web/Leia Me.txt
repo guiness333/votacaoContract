@@ -1,0 +1,3 @@
+Primeiro será criado esboço visual do projeto, após isso as chamadas de painel e integração com os frameworks necessários.
+
+1 - JQuery não está funcionando como deveria, provavelmente devido ao firewall.

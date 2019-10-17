@@ -29,7 +29,7 @@
         });
 
 
-        var contract = new web3.eth.Contract([{"inputs":[],"payable":false,"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"string","name":"nome","type":"string"},{"indexed":false,"internalType":"uint16","name":"digito","type":"uint16"}],"name":"eAddCandidato","type":"event"},{"constant":false,"inputs":[{"internalType":"string","name":"nome","type":"string"},{"internalType":"string","name":"partido","type":"string"},{"internalType":"uint16","name":"digito","type":"uint16"}],"name":"addCandidato","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"internalType":"uint16","name":"digito","type":"uint16"}],"name":"get","outputs":[{"components":[{"internalType":"string","name":"nome","type":"string"},{"internalType":"string","name":"partido","type":"string"},{"internalType":"uint16","name":"digito","type":"uint16"}],"internalType":"struct votacao.candidato","name":"","type":"tuple"}],"payable":false,"stateMutability":"view","type":"function"}],'0xefbe2a6a07be34366a4c4f6e3ab3a4f59f6a34dc',{
+        var contract = new web3.eth.Contract([{"inputs":[],"payable":false,"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"string","name":"nome","type":"string"},{"indexed":false,"internalType":"string","name":"digito","type":"string"}],"name":"eAddCandidato","type":"event"},{"constant":false,"inputs":[{"internalType":"string","name":"nome","type":"string"},{"internalType":"string","name":"partido","type":"string"},{"internalType":"string","name":"digito","type":"string"}],"name":"addCandidato","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"internalType":"string","name":"digito","type":"string"}],"name":"getCandidato","outputs":[{"internalType":"string","name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"internalType":"string","name":"digito","type":"string"}],"name":"getId","outputs":[{"internalType":"uint32","name":"","type":"uint32"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"internalType":"string","name":"digito","type":"string"}],"name":"getNumVotes","outputs":[{"internalType":"uint32","name":"","type":"uint32"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"internalType":"string","name":"digito","type":"string"}],"name":"votar","outputs":[{"internalType":"string","name":"","type":"string"}],"payable":false,"stateMutability":"nonpayable","type":"function"}],'0xB654a7f406fF8D60da037357C835A82ACa47B164',{
         from: web3.defaultAccount,
         gasPrice: '20000000000'
         });
@@ -43,16 +43,17 @@
             let digito = document.getElementById("digito").value; 
 
             console.log(nome,partido,digito);
-            contract.methods.addCandidato(nome, partido, parseInt(digito)).send({gas:2000000}).then(a=>console.log(a));
+            web3.eth.personal.unlockAccount(web3.eth.defaultAccount, "root").then(a=>{console.log(a)
+            contract.methods.addCandidato(nome, partido, digito).send({from: web3.eth.defaultAccount, gas:2000000}).then(a=>console.log(a))});
         }
         function getCandidatos(){
             let digito = document.getElementById("digito").value;
-            contract.methods.get(parseInt(digito)).call().then(a=>document.getElementById("votacao").innerHTML = a);
+            contract.methods.getCandidato(digito).call().then(a=>document.getElementById("votacao").innerHTML = a);
             
         }
     
 
 	</script>
-	<contract>contract=0xeFBE2A6a07BE34366a4C4f6e3ab3a4F59f6A34dc</contract>
+	<contract>0xB654a7f406fF8D60da037357C835A82ACa47B164</contract>
 </body>
 </html>

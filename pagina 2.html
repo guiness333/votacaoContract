@@ -1,0 +1,104 @@
+<!doctype html>
+<html>
+    <head>
+	<title>BC Solution Project</title>
+		<body>
+        
+        <meta charset="utf-8">        
+        <link href="bootstrap\css\bootstrap.css" rel="stylesheet">      
+		<link href="bootstrap\css\bootstrap-grid.css" rel="stylesheet">  		
+		
+		
+	<div class="container">
+	<div class="col">
+	<div class="col-md-4 offset-md-4 ">
+	<div class="col align-self-start">
+	<script src="node_modules/web3/dist/web3.min.js"></script>
+    <form>
+		<div class="form-group">
+		
+		
+			<label id="votos">Informe o numero do candidato</label>
+			<input type="text" class="form-control" size="8" id="txForm" disabled placeholder="">
+			<div class="container">
+			
+			<img src="Imagens\btNumerico01.png" onclick="Escrever(1)" width=30%>
+			<img src= "Imagens\btNumerico02.png" onclick="Escrever(2)" width=30%>
+			<img src= "Imagens\btNumerico03.png" onclick="Escrever(3)" width=30%><br>
+			<img src="Imagens\btNumerico04.png" onclick="Escrever(4)" width=30%>
+			<img src="Imagens\btNumerico05.png" onclick="Escrever(5)" width=30%>
+			<img src="Imagens\btNumerico06.png" onclick="Escrever(6)" width=30%><br>
+			<img src="Imagens\btNumerico07.png" onclick="Escrever(7)" width=30%>
+			<img src="Imagens\btNumerico08.png" onclick="Escrever(8)" width=30%>
+			<img src="Imagens\btNumerico09.png" onclick="Escrever(9)" width=30%><br>
+			<img src="Imagens\btNumericoXX.png" width=30%>
+			<img src="Imagens\btNumerico00.png" onclick="Escrever(0)" width=30%>
+			<img src="Imagens\btNumericoDELETE.png" onclick="Deletar()" width=30%><br>
+			<img src="Imagens\btVerificar.png" onclick="votar()" width=100%/12>
+			<img src="Imagens\btVerificar.png" onclick="getVotos()" width=100%/12>
+			
+		</form>
+	</div>
+	</div>		
+	</div>
+	</div>
+	</div>
+	</div>
+	
+	<script>
+		
+		
+		function Escrever(x){
+			if(document.querySelector('#txForm').value.length < 9){
+				document.querySelector('#txForm').value += x;		
+			}else{ alert("Valor não permitido!"); }
+			return false;			
+		}
+		
+		function Deletar(){
+			let input = document.getElementById('txForm');
+			let inputText = input.value;
+			input.value = inputText.substring(0,inputText.length-1);
+			console.log(input.value);
+		}
+
+
+		web3 = new Web3("http://127.0.0.1:8545");
+        web3.eth.getAccounts().then(function(result){
+        web3.eth.defaultAccount = result[0];
+        });
+
+
+        var contract = new web3.eth.Contract([{"inputs":[],"payable":false,"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"string","name":"nome","type":"string"},{"indexed":false,"internalType":"string","name":"digito","type":"string"}],"name":"eAddCandidato","type":"event"},{"constant":false,"inputs":[{"internalType":"string","name":"nome","type":"string"},{"internalType":"string","name":"partido","type":"string"},{"internalType":"string","name":"digito","type":"string"}],"name":"addCandidato","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"internalType":"string","name":"digito","type":"string"}],"name":"getCandidato","outputs":[{"internalType":"string","name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"internalType":"string","name":"digito","type":"string"}],"name":"getId","outputs":[{"internalType":"uint32","name":"","type":"uint32"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"internalType":"string","name":"digito","type":"string"}],"name":"getNumVotes","outputs":[{"internalType":"uint32","name":"","type":"uint32"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"internalType":"string","name":"digito","type":"string"}],"name":"votar","outputs":[{"internalType":"string","name":"","type":"string"}],"payable":false,"stateMutability":"nonpayable","type":"function"}],'0xB654a7f406fF8D60da037357C835A82ACa47B164',{
+        from: web3.defaultAccount,
+        gasPrice: '20000000000'
+        });
+        
+        
+
+        console.log(contract.methods);
+
+
+		function votar(){
+            let digito = document.getElementById("txForm").value; 
+
+            console.log(digito);
+            web3.eth.personal.unlockAccount(web3.eth.defaultAccount, "root").then(a=>{console.log(a)
+            contract.methods.votar(digito).send({from: web3.eth.defaultAccount, gas:2000000}).then(a=>console.log(a))});
+        }
+		function getVotos(){
+            let digito = document.getElementById("txForm").value;
+            contract.methods.getNumVotes(digito).call().then(a=>document.getElementById("votos").innerHTML = a);
+            
+        }
+		
+	
+	
+	</script>
+	
+	
+       
+        
+    </body>
+
+</html>
